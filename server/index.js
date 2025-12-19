@@ -7,7 +7,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+// CORS configuration - allow all origins in development, specific origins in production
+const corsOptions = {
+  origin: process.env.CLIENT_URL ? [process.env.CLIENT_URL] : true, // Allow all origins if CLIENT_URL not set (development)
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

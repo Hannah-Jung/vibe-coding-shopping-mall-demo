@@ -1,12 +1,30 @@
 // API Configuration
 // Use environment variable for production, fallback to localhost for development
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+const envApiUrl = import.meta.env.VITE_API_BASE_URL;
+export const API_BASE_URL = envApiUrl || "http://localhost:5000/api";
 export const FETCH_TIMEOUT = 10000; // 10 seconds
+
+// Debug: Log API_BASE_URL in production (remove after debugging)
+if (import.meta.env.PROD) {
+  console.log("🔍 API_BASE_URL:", API_BASE_URL);
+  console.log("🔍 VITE_API_BASE_URL env:", envApiUrl);
+  console.log("🔍 import.meta.env.MODE:", import.meta.env.MODE);
+
+  // Warn if using fallback URL in production
+  if (!envApiUrl) {
+    console.error(
+      "⚠️ WARNING: VITE_API_BASE_URL is not set! Using fallback:",
+      API_BASE_URL
+    );
+  }
+}
 
 // Cloudinary Configuration
 // Get from environment variables or use default values
-export const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "your-cloud-name";
-export const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || "your-upload-preset";
+export const CLOUDINARY_CLOUD_NAME =
+  import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "your-cloud-name";
+export const CLOUDINARY_UPLOAD_PRESET =
+  import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || "your-upload-preset";
 
 // Validation Regex
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -71,10 +89,12 @@ export const paperStyles = {
 export const ERROR_MESSAGES = {
   EMAIL_REQUIRED: "Email is required.",
   PASSWORD_REQUIRED: "Password is required.",
-  EMAIL_INVALID: "Please enter a valid email address (e.g., example@domain.com).",
+  EMAIL_INVALID:
+    "Please enter a valid email address (e.g., example@domain.com).",
   EMAIL_EXISTS: "This email is already in use.",
   EMAIL_AVAILABLE: "This email is available.",
-  NAME_INVALID: "Name must start and end with a letter. No consecutive spaces, hyphens, or apostrophes.",
+  NAME_INVALID:
+    "Name must start and end with a letter. No consecutive spaces, hyphens, or apostrophes.",
   PASSWORD_MISMATCH: "Passwords do not match.",
   PASSWORD_WEAK: "Please create your password first.",
   FILL_ALL_FIELDS: "Please fill in all fields.",
@@ -86,4 +106,3 @@ export const SUCCESS_MESSAGES = {
   SIGNUP_SUCCESS: "Your account has been created successfully!",
   LOGIN_SUCCESS: "Login successful.",
 };
-
