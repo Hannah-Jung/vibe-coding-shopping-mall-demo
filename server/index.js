@@ -9,7 +9,26 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 // CORS configuration - allow all origins in development, specific origins in production
 const corsOptions = {
-  origin: process.env.CLIENT_URL ? [process.env.CLIENT_URL] : true, // Allow all origins if CLIENT_URL not set (development)
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // In development, allow all origins
+    if (!process.env.CLIENT_URL) {
+      return callback(null, true);
+    }
+    
+    // In production, allow CLIENT_URL and any Vercel domain
+    const isVercelDomain = origin.includes('.vercel.app');
+    const matchesClientUrl = origin === process.env.CLIENT_URL;
+    
+    if (matchesClientUrl || isVercelDomain) {
+      callback(null, true);
+    } else {
+      console.log(`[CORS] Blocked origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 };
 app.use(cors(corsOptions));
