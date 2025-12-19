@@ -177,16 +177,17 @@ const createCheckoutSession = async (req, res) => {
       customerEmail
     );
 
+    // Debug: Log CLIENT_URL environment variable
+    const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
+    console.log("[DEBUG] CLIENT_URL from env:", process.env.CLIENT_URL);
+    console.log("[DEBUG] Using CLIENT_URL:", clientUrl);
+
     const sessionConfig = {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${
-        process.env.CLIENT_URL || "http://localhost:5173"
-      }/order/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${
-        process.env.CLIENT_URL || "http://localhost:5173"
-      }/checkout?canceled=true`,
+      success_url: `${clientUrl}/order/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${clientUrl}/checkout?canceled=true`,
       metadata: {
         ...metadata,
         shippingInfo: JSON.stringify(shippingInfo || {}),
