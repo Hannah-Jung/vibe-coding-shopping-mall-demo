@@ -1,0 +1,23 @@
+/* Cart page Grid container styles */
+.cart-grid-container {
+  width: 100% !important;
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+  justify-content: center !important;
+}
+
+/* Cart page table header styles - Responsive */
+@media (min-width: 900px) {
+  .product-header {
+    flex: 1 1 60% !important;
+  }
+
+  .quantity-header {
+    flex: 0 0 20% !important;
+  }
+
+  .total-header {
+    flex: 0 0 20% !important;
+  }
+}
+
